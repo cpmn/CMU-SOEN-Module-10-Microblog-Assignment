@@ -18,7 +18,6 @@ class SearchableMixin(object):
     @classmethod
     def search(cls, expression, page, per_page):
         ids, total = query_index(cls.__tablename__, expression, page, per_page)
-        #adding a comment just to check the py code.
         if total == 0:
             return cls.query.filter_by(id=0), 0
         when = []
@@ -158,8 +157,8 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         try:
             id = jwt.decode(token, current_app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
-        except:
-            return
+        except Exception:
+            print('Try again!')
         return User.query.get(id)
 
     def new_messages(self):
